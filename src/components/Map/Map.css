@@ -1,0 +1,5 @@
+.map {
+    display: flex;
+    flex-wrap: wrap;
+    width: 225px;
+}
