@@ -6,6 +6,7 @@ const Context = React.createContext();
 export default function ContextProvider({ children }) {
 
     const [currentCards, setCurrentCards] = useState(null);
+    const [myplSelect, setMyplSelect] = useState(false);
 
     const addMoreFields = (arr, currentCards = null) => {
 
@@ -116,7 +117,7 @@ export default function ContextProvider({ children }) {
     }, [cards]);
 
     return (
-        <Context.Provider value={{ map, setMap, cards, currentCards, setCurrentCards, addMoreFields, setCards }}>
+        <Context.Provider value={{ map, setMap, cards, currentCards, setCurrentCards, addMoreFields, setCards, myplSelect, setMyplSelect }}>
             {children}
         </Context.Provider>
     );
