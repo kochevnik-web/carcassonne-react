@@ -27,3 +27,43 @@
     width: 100%;
     height: 100%;
 }
+
+.my-field {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.my-field span {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    cursor: pointer;
+    border: 2px solid #fff;
+}
+
+.my-field .top {
+    left: 50%;
+    top: 19%;
+}
+.my-field .right {
+    left: 81%;
+    top: 50%;
+}
+.my-field .bottom {
+    left: 50%;
+    top: 81%;
+}
+.my-field .left {
+    left: 19%;
+    top: 50%;
+}
+.my-field .center {
+    left: 50%;
+    top: 50%;
+}
