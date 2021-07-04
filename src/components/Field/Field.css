@@ -67,3 +67,44 @@
     left: 50%;
     top: 50%;
 }
+
+.field.top:after,
+.field.right:after,
+.field.bottom:after,
+.field.left:after,
+.field.center:after {
+    content: "";
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+}
+
+.field.top:after {
+    left: 50%;
+    top: 19%;
+}
+
+.field.right:after {
+    left: 81%;
+    top: 50%;
+}
+
+.field.bottom:after {
+    left: 50%;
+    top: 81%;
+}
+.field.left:after {
+    left: 19%;
+    top: 50%;
+}
+
+.field.center:after {
+    left: 50%;
+    top: 50%;
+}
+
+.field.blue:after {
+    background: blue;
+}

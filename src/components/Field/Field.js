@@ -5,10 +5,8 @@ import { Context } from '../../context';
 
 export default function Field({ field }) {
 
-    const { type, img, rotate, x, y, last } = field;
+    const { type, img, rotate, x, y, last, pl } = field;
     const { map, setMap, currentCards, addMoreFields, setCards, cards, myplSelect, setMyplSelect } = useContext(Context);
-
-    let clx = ['field', type];
 
     const addTopLine = arr => {
         let width = arr[0].length;
@@ -146,7 +144,8 @@ export default function Field({ field }) {
             rotate: currentCards.rotate, //Поворот поля
             scheme: currentCards.scheme, //Схема поля
             center: currentCards.center, //Центр поля
-            last: 1                      //Последнее поле на карте
+            last: 1,                     //Последнее поле на карте
+            pl: [false, false, false, false, false]
         }
 
         //Цикл, с помощью которого определяем с какой стороны
@@ -201,22 +200,44 @@ export default function Field({ field }) {
         setMyplSelect(false);
     }
 
+    const addMyPosition = (id, field) => {
+        const m = [...map];
+        m[field.y][field.x].last = false;
+        m[field.y][field.x].pl[id] = 1;
+
+        setMap(m);
+        setMyplSelect(false);
+    }
+
+    const setPosition = ['top', 'right', 'bottom', 'left', 'center'];
+    const setPositionField = setPosition.map((el, indx) => {
+        return (
+            <span
+                key={indx}
+                className={el}
+                onClick={() => addMyPosition(indx, field)}
+            ></span>
+        )
+    });
+
+    let clx = ['field', type];
+    pl?.map((el, indx) => {
+        if(el) clx.push(setPosition[indx] + ' blue');
+        return el;
+    })
+
     return (
         <div className={clx.join(' ')} onClick={() => selectField(field)}>
             {type === 'card' && (
                 <>
                     <img src={img} alt={img} style={{ transform: 'rotate(' + rotate + 'deg)' }} />
-                    <div className="cord">
+                    {/* <div className="cord">
                         <div>x: {x}</div>
                         <div>y: {y}</div>
-                    </div>
+                    </div> */}
                     {myplSelect && last && (
                         <div className="my-field">
-                            <span className="top"></span>
-                            <span className="right"></span>
-                            <span className="bottom"></span>
-                            <span className="left"></span>
-                            <span className="center"></span>
+                            {setPositionField}
                         </div>
                     )}
                 </>
