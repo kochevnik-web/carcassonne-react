@@ -4,11 +4,15 @@ import { Context } from '../../context';
 
 export default function MyplsBoad() {
 
-    const {myplSelect, setMyplSelect} = useContext(Context);
+    const {players, myplSelect, setMyplSelect} = useContext(Context);
+    let clx = ['mypls-board'];
+    const currentPlayer = players.filter(el => el.current)[0];
+    clx.push(currentPlayer.color);
+    if(myplSelect) clx.push('select');
 
     return (
         <div
-            className={"mypls-board" + (myplSelect ? " select" : '')}
+            className={clx.join(' ')}
             onClick={()=>setMyplSelect(!myplSelect)}
         ></div>
     )

@@ -154,6 +154,12 @@ export default function ContextProvider({ children }) {
         setMap(addMoreFields([...map], nextCard));
     }, [cards]);
 
+    useEffect(() => {
+        if(!nextTurn){
+            setMap(addMoreFields([...map], currentCards));
+        }
+    }, [nextTurn]);
+
     return (
         <Context.Provider value={{ map, setMap, cards, currentCards, setCurrentCards, addMoreFields, setCards, myplSelect, setMyplSelect, players, setPlayers, nextTurn, setNextTurn }}>
             {children}
