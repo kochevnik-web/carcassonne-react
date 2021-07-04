@@ -5,7 +5,10 @@ import { Context } from '../../context';
 export default function Field({ field }) {
 
     const { type, img, rotate, x, y, last, pl } = field;
-    const { map, setMap, currentCards, addMoreFields, setCards, cards, myplSelect, setMyplSelect, setNextTurn } = useContext(Context);
+    const { map, setMap, currentCards, addMoreFields, setCards, cards, myplSelect, setMyplSelect, setNextTurn, players } = useContext(Context);
+
+    //Получаем текущего игрока
+    const currentPlayer = players.filter(el => el.current)[0];
 
     //Добавляем вверх строку пустых полей
     const addTopLine = arr => {
@@ -148,7 +151,8 @@ export default function Field({ field }) {
             scheme: currentCards.scheme, //Схема поля
             center: currentCards.center, //Центр поля
             last: 1,                     //Последнее поле на карте
-            pl: [false, false, false, false, false]
+            pl: [false, false, false, false, false],
+            player: currentPlayer.id
         }
 
         //Цикл, с помощью которого определяем с какой стороны
@@ -216,7 +220,7 @@ export default function Field({ field }) {
     const addMyPosition = (id, field) => {
         const m = [...map];
         m[field.y][field.x].last = false;
-        m[field.y][field.x].pl[id] = 1;
+        m[field.y][field.x].pl[id] = currentPlayer.id;
 
         setMap(m);
         setMyplSelect(false);
@@ -235,7 +239,8 @@ export default function Field({ field }) {
 
     let clx = ['field', type];
     pl?.map((el, indx) => {
-        if(el) clx.push(setPosition[indx] + ' blue');
+        const player = players.filter(i => i.id === el)[0];
+        if(el) clx.push(setPosition[indx] + ' ' + player.color);
         return el;
     })
 
