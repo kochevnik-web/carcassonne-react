@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import './Field.css';
-
 import { Context } from '../../context';
 
 export default function Field({ field }) {
 
     const { type, img, rotate, x, y, last, pl } = field;
-    const { map, setMap, currentCards, addMoreFields, setCards, cards, myplSelect, setMyplSelect } = useContext(Context);
+    const { map, setMap, currentCards, addMoreFields, setCards, cards, myplSelect, setMyplSelect, setNextTurn } = useContext(Context);
 
+    //Добавляем вверх строку пустых полей
     const addTopLine = arr => {
         let width = arr[0].length;
         let height = arr.length + 1;
@@ -35,6 +35,7 @@ export default function Field({ field }) {
         return newArr;
     }
 
+    //Добавляем вниз строку пустых полей
     const addBottomLine = arr => {
         let width = arr[0].length;
         let height = arr.length + 1;
@@ -62,7 +63,8 @@ export default function Field({ field }) {
         return newArr;
     }
 
-    const addLefttLine = arr => {
+    //Добавляем влево колонку пустых полей
+    const addLeftLine = arr => {
         let width = arr[0].length + 1;
         let height = arr.length;
         const newArr = [];
@@ -89,7 +91,8 @@ export default function Field({ field }) {
         return newArr;
     }
 
-    const addRighttLine = arr => {
+    //Добавляем вправо колонку пустых полей
+    const addRightLine = arr => {
         let width = arr[0].length + 1;
         let height = arr.length;
         const newArr = [];
@@ -116,7 +119,7 @@ export default function Field({ field }) {
         return newArr;
     }
 
-    //На вход приходит объект поля карты, по каторому произвели клик
+    //На вход приходит объект поля карты, по которому произвели клик
     const selectField = field => {
         //Если поле, по каторому кликнули для добавления
         //не является с типом more, не выполняем действие
@@ -170,12 +173,12 @@ export default function Field({ field }) {
                         }
                         if (typeof m[y][x - 1] === "undefined") {
                             flag = false;
-                            m = addLefttLine(m);
+                            m = addLeftLine(m);
                             break loop;
                         }
                         if (typeof m[y][x + 1] === "undefined") {
                             flag = false;
-                            m = addRighttLine(m);
+                            m = addRightLine(m);
                             break loop;
                         }
                     }
@@ -184,10 +187,16 @@ export default function Field({ field }) {
             flag = true;
         }
 
+        //Пропускаем массив полей на карте через функцию addMoreFields,
+        //что бы перерисовать поля, на каторые разрешается
+        //ставить карту
         m = addMoreFields(m, currentCards);
 
+        //Обновляем стейт игрового поля
         setMap(m);
 
+        //Проходим по массиву игровых тайлов, что бы убрать возомжность
+        //повторного выпадания тайла. И обновляем стейт
         let c = [...cards];
         c = c.map(el => {
             if (el.img === currentCards.img) {
@@ -195,9 +204,13 @@ export default function Field({ field }) {
             }
             return el;
         });
-
         setCards(c);
+
+        //Убераем выделения мипла игрока
         setMyplSelect(false);
+
+        //После установки тайла на поле даем возможность перехода хода
+        setNextTurn(true);
     }
 
     const addMyPosition = (id, field) => {

@@ -7,16 +7,42 @@ export default function ContextProvider({ children }) {
 
     const [currentCards, setCurrentCards] = useState(null);
     const [myplSelect, setMyplSelect] = useState(false);
+    const [nextTurn, setNextTurn] = useState(false);
+    const [players, setPlayers] = useState([
+        {
+            id: 1,
+            title: 'Player #1',
+            current: true,
+            inGame: true,
+            color: 'blue',
+            source: 0,
+            mypls: 7,
+        },
+        {
+            id: 2,
+            title: 'Player #2',
+            current: false,
+            inGame: true,
+            color: 'red',
+            source: 0,
+            mypls: 7,
+        }
+    ]);
 
+    //Функция добавления полей возможного размещения
+    //тайлов на карте
     const addMoreFields = (arr, currentCards = null) => {
-
         arr = arr.map(row => {
             return row.map(el => {
                 if (typeof arr[el.y - 1] !== "undefined" && el.type !== 'card') {
                     if (typeof arr[el.y - 1][el.x] !== "undefined") {
                         if (arr[el.y - 1][el.x].type === 'card') {
                             if(currentCards?.scheme[0] === arr[el.y - 1][el.x].scheme[2]) {
-                                el.type = 'more';
+                                if(!nextTurn){
+                                    el.type = 'more';
+                                }else{
+                                    el.type = 'empty';
+                                }
                             }else {
                                 el.type = 'empty';
                             }
@@ -28,7 +54,11 @@ export default function ContextProvider({ children }) {
                     if (typeof arr[el.y + 1][el.x] !== "undefined") {
                         if (arr[el.y + 1][el.x].type === 'card') {
                             if(currentCards?.scheme[2] === arr[el.y + 1][el.x].scheme[0]) {
-                                el.type = 'more';
+                                if(!nextTurn){
+                                    el.type = 'more';
+                                }else{
+                                    el.type = 'empty';
+                                }
                             }else {
                                 el.type = 'empty';
                             }
@@ -39,7 +69,11 @@ export default function ContextProvider({ children }) {
                 if (typeof arr[el.y][el.x + 1] !== "undefined" && el.type !== 'card') {
                     if (arr[el.y][el.x + 1].type === 'card') {
                         if(currentCards?.scheme[1] === arr[el.y][el.x + 1].scheme[3]) {
-                            el.type = 'more';
+                            if(!nextTurn){
+                                el.type = 'more';
+                            }else{
+                                el.type = 'empty';
+                            }
                         }else {
                             el.type = 'empty';
                         }
@@ -49,7 +83,11 @@ export default function ContextProvider({ children }) {
                 if (typeof arr[el.y][el.x - 1] !== "undefined" && el.type !== 'card') {
                     if (arr[el.y][el.x - 1].type === 'card') {
                         if(currentCards?.scheme[3] === arr[el.y][el.x - 1].scheme[1]) {
-                            el.type = 'more';
+                            if(!nextTurn){
+                                el.type = 'more';
+                            }else{
+                                el.type = 'empty';
+                            }
                         }else {
                             el.type = 'empty';
                         }
@@ -117,7 +155,7 @@ export default function ContextProvider({ children }) {
     }, [cards]);
 
     return (
-        <Context.Provider value={{ map, setMap, cards, currentCards, setCurrentCards, addMoreFields, setCards, myplSelect, setMyplSelect }}>
+        <Context.Provider value={{ map, setMap, cards, currentCards, setCurrentCards, addMoreFields, setCards, myplSelect, setMyplSelect, players, setPlayers, nextTurn, setNextTurn }}>
             {children}
         </Context.Provider>
     );
