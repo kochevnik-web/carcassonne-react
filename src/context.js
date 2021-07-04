@@ -149,14 +149,20 @@ export default function ContextProvider({ children }) {
     }, []);
 
     useEffect(() => {
-        const nextCard = getNextCard(cardData);
-        setCurrentCards(nextCard);
-        setMap(addMoreFields([...map], nextCard));
+        if(nextTurn) {
+            setCurrentCards(null);
+        }else {
+            const nextCard = getNextCard(cardData);
+            setCurrentCards(nextCard);
+            setMap(addMoreFields([...map], nextCard));
+        }
     }, [cards]);
 
     useEffect(() => {
         if(!nextTurn){
-            setMap(addMoreFields([...map], currentCards));
+            const nextCard = getNextCard(cardData);
+            setCurrentCards(nextCard);
+            setMap(addMoreFields([...map], nextCard));
         }
     }, [nextTurn]);
 

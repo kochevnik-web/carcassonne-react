@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Context } from '../../context';
 import './NextCard.css';
+import defaultImg from '../../img/default.jpg';
 
 export default function NextCard() {
 
@@ -17,8 +18,20 @@ export default function NextCard() {
 
     return (
         <div className="nextcard">
-            <img src={currentCards?.img} style={{ transform: 'rotate(' + currentCards?.rotate + 'deg)' }} />
-            <span onClick={turnCard}>Поворот</span>
+            {currentCards && (
+                <>
+                    <img
+                        src={currentCards?.img}
+                        style={{ transform: 'rotate(' + currentCards?.rotate + 'deg)' }}
+                    />
+                    <span onClick={turnCard}>Поворот</span>
+                </>
+            )}
+
+            {!currentCards && (
+                <img src={defaultImg}/>
+            )}
+
         </div>
     )
 }
