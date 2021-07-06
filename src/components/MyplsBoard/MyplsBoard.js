@@ -14,6 +14,6 @@ export default function MyplsBoad() {
         <div
             className={clx.join(' ')}
             onClick={()=>setMyplSelect(!myplSelect)}
-        ></div>
+        >{currentPlayer.mypls}</div>
     )
 }

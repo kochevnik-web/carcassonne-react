@@ -4,6 +4,12 @@
     height: 50px;
     margin: 20px;
     opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .mypls-board.blue {

@@ -5,7 +5,7 @@ import { Context } from '../../context';
 export default function Field({ field }) {
 
     const { type, img, rotate, x, y, last, pl } = field;
-    const { map, setMap, currentCards, addMoreFields, setCards, cards, myplSelect, setMyplSelect, setNextTurn, players } = useContext(Context);
+    const { map, setMap, currentCards, addMoreFields, setCards, cards, myplSelect, setMyplSelect, setNextTurn, players, setPlayers } = useContext(Context);
 
     //Получаем текущего игрока
     const currentPlayer = players.filter(el => el.current)[0];
@@ -218,12 +218,21 @@ export default function Field({ field }) {
     }
 
     const addMyPosition = (id, field) => {
-        const m = [...map];
-        m[field.y][field.x].last = false;
-        m[field.y][field.x].pl[id] = currentPlayer.id;
+        if(currentPlayer.mypls > 0){
+            const m = [...map];
+            m[field.y][field.x].last = false;
+            m[field.y][field.x].pl[id] = currentPlayer.id;
 
-        setMap(m);
-        setMyplSelect(false);
+            const p = players.map(el =>{
+                if(currentPlayer.id === el.id) el.mypls = el.mypls - 1;
+                return el;
+            });
+
+            setPlayers(p);
+
+            setMap(m);
+            setMyplSelect(false);
+        }
     }
 
     const setPosition = ['top', 'right', 'bottom', 'left', 'center'];
@@ -253,7 +262,7 @@ export default function Field({ field }) {
                         <div>x: {x}</div>
                         <div>y: {y}</div>
                     </div> */}
-                    {myplSelect && last && (
+                    {myplSelect && last && currentPlayer.mypls > 0 && (
                         <div className="my-field">
                             {setPositionField}
                         </div>
